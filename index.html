@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go 语言学习平台 - 90 天从入门到精通</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #667eea;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 18px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 48px;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .today-content {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .today-content h2 {
+            color: white;
+        }
+        
+        .day-list {
+            list-style: none;
+        }
+        
+        .day-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s;
+        }
+        
+        .day-item:hover {
+            background: #f8f9fa;
+            transform: translateX(10px);
+        }
+        
+        .day-item a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .stage-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        
+        .stage-basic {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .stage-advanced {
+            background: #2196F3;
+            color: white;
+        }
+        
+        .stage-practice {
+            background: #FF9800;
+            color: white;
+        }
+        
+        .stage-expert {
+            background: #9C27B0;
+            color: white;
+        }
+        
+        .progress-bar {
+            background: #eee;
+            border-radius: 10px;
+            height: 20px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .quick-link {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+        
+        .quick-link:hover {
+            transform: scale(1.05);
+        }
+        
+        .quick-link-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Go 语言学习平台</h1>
+            <p class="subtitle">90 天从入门到精通 - 系统化学习路线</p>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="currentDay">0</div>
+                    <div class="stat-label">当前学习天数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalDays">90</div>
+                    <div class="stat-label">总学习天数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="progress">0%</div>
+                    <div class="stat-label">学习进度</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="stage">基础</div>
+                    <div class="stat-label">当前阶段</div>
+                </div>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill">0%</div>
+            </div>
+        </header>
+        
+        <div class="content-grid">
+            <div class="card today-content">
+                <h2>📅 今日学习内容</h2>
+                <div id="todayContent">
+                    <p>加载中...</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>📚 学习路线</h2>
+                <ul class="day-list">
+                    <li class="day-item">
+                        <a href="#stage1">第 1-15 天：Go 语言基础</a>
+                        <span class="stage-badge stage-basic">基础</span>
+                    </li>
+                    <li class="day-item">
+                        <a href="#stage2">第 16-30 天：Go 语言进阶</a>
+                        <span class="stage-badge stage-advanced">进阶</span>
+                    </li>
+                    <li class="day-item">
+                        <a href="#stage3">第 31-60 天：后台开发实战</a>
+                        <span class="stage-badge stage-practice">实战</span>
+                    </li>
+                    <li class="day-item">
+                        <a href="#stage4">第 61-90 天：高级专题</a>
+                        <span class="stage-badge stage-expert">高级</span>
+                    </li>
+                </ul>
+                
+                <div class="quick-links">
+                    <a href="/docs/learning-path.md" class="quick-link">
+                        <div class="quick-link-icon">📖</div>
+                        <div>完整路线</div>
+                    </a>
+                    <a href="/daily/" class="quick-link">
+                        <div class="quick-link-icon">📅</div>
+                        <div>每日学习</div>
+                    </a>
+                    <a href="https://go.dev" target="_blank" class="quick-link">
+                        <div class="quick-link-icon">🌐</div>
+                        <div>Go 官网</div>
+                    </a>
+                    <a href="https://pkg.go.dev" target="_blank" class="quick-link">
+                        <div class="quick-link-icon">📦</div>
+                        <div>文档</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Go 语言学习平台 | 每天进步一点点 | 2026</p>
+            <p>更新时间：<span id="updateTime"></span></p>
+        </footer>
+    </div>
+    
+    <script>
+        // 计算学习天数
+        const startDate = new Date('2026-03-29');
+        const today = new Date();
+        const diffTime = Math.abs(today - startDate);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        const currentDay = diffDays > 0 ? diffDays : 1;
+        
+        // 更新统计
+        document.getElementById('currentDay').textContent = currentDay;
+        document.getElementById('progress').textContent = Math.min(100, Math.round((currentDay / 90) * 100)) + '%';
+        
+        // 更新进度条
+        const progress = Math.min(100, (currentDay / 90) * 100);
+        document.getElementById('progressFill').style.width = progress + '%';
+        document.getElementById('progressFill').textContent = Math.round(progress) + '%';
+        
+        // 确定阶段
+        let stage = '基础';
+        if (currentDay > 60) stage = '高级';
+        else if (currentDay > 30) stage = '实战';
+        else if (currentDay > 15) stage = '进阶';
+        document.getElementById('stage').textContent = stage;
+        
+        // 更新时间
+        document.getElementById('updateTime').textContent = new Date().toLocaleString('zh-CN');
+        
+        // 加载今日学习内容
+        fetch('/today.md')
+            .then(response => response.text())
+            .then(content => {
+                // 简单 Markdown 转换
+                const html = content
+                    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+                    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+                    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+                    .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
+                    .replace(/\n/gim, '<br>');
+                document.getElementById('todayContent').innerHTML = html;
+            })
+            .catch(err => {
+                document.getElementById('todayContent').innerHTML = '<p>今日学习内容即将发布...</p>';
+            });
+    </script>
+</body>
+</html>
