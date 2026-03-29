@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go 语言学习 - 第 {{DAY}} 天</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* 左侧导航 */
+        .sidebar {
+            width: 300px;
+            background: #f5f5f5;
+            border-right: 1px solid #ddd;
+            padding: 20px 0;
+            overflow-y: auto;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 2px solid #4a90d9;
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-header h1 {
+            font-size: 18px;
+            color: #4a90d9;
+            margin-bottom: 5px;
+        }
+        
+        .progress-info {
+            font-size: 13px;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        .progress-bar {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 8px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #4a90d9 0%, #357abd 100%);
+            height: 100%;
+            transition: width 0.3s;
+        }
+        
+        .nav-section {
+            margin-bottom: 25px;
+        }
+        
+        .nav-section-title {
+            padding: 8px 20px;
+            font-weight: bold;
+            color: #4a90d9;
+            font-size: 14px;
+            border-left: 3px solid #4a90d9;
+            margin-bottom: 10px;
+            background: #e8f4fc;
+        }
+        
+        .day-list {
+            list-style: none;
+        }
+        
+        .day-item {
+            display: block;
+            padding: 8px 20px 8px 25px;
+            color: #333;
+            text-decoration: none;
+            font-size: 13px;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+        }
+        
+        .day-item:hover {
+            background: #e8f4fc;
+            color: #4a90d9;
+        }
+        
+        .day-item.active {
+            background: #e8f4fc;
+            color: #4a90d9;
+            border-left-color: #4a90d9;
+            font-weight: bold;
+        }
+        
+        .day-item.completed {
+            color: #2e7d32;
+        }
+        
+        .day-item.completed:before {
+            content: '✓ ';
+            color: #2e7d32;
+        }
+        
+        /* 主内容区 */
+        .main-content {
+            margin-left: 300px;
+            flex: 1;
+            padding: 40px;
+            max-width: 1200px;
+        }
+        
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 30px;
+        }
+        
+        .breadcrumb {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .breadcrumb a {
+            color: #4a90d9;
+            text-decoration: none;
+        }
+        
+        .btn {
+            padding: 8px 20px;
+            background: #4a90d9;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            background: #357abd;
+        }
+        
+        .btn-outline {
+            background: white;
+            border: 1px solid #ddd;
+            color: #333;
+        }
+        
+        .btn-outline:hover {
+            background: #f5f5f5;
+        }
+        
+        .btn-nav {
+            margin-left: 10px;
+        }
+        
+        /* Markdown 样式 */
+        .markdown-body {
+            background: white;
+            line-height: 1.8;
+        }
+        
+        .markdown-body h1 {
+            font-size: 28px;
+            color: #4a90d9;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #4a90d9;
+        }
+        
+        .markdown-body h2 {
+            font-size: 22px;
+            color: #333;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4a90d9;
+        }
+        
+        .markdown-body h3 {
+            font-size: 18px;
+            color: #4a90d9;
+            margin: 25px 0 12px;
+        }
+        
+        .markdown-body h4 {
+            font-size: 16px;
+            color: #333;
+            margin: 20px 0 10px;
+        }
+        
+        .markdown-body p {
+            margin: 15px 0;
+            text-align: justify;
+        }
+        
+        .markdown-body ul, .markdown-body ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+        
+        .markdown-body li {
+            margin: 8px 0;
+        }
+        
+        .markdown-body code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            color: #e83e8c;
+        }
+        
+        .markdown-body pre {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        .markdown-body pre code {
+            background: none;
+            padding: 0;
+            color: #333;
+        }
+        
+        .markdown-body blockquote {
+            border-left: 4px solid #4a90d9;
+            padding-left: 20px;
+            margin: 20px 0;
+            color: #666;
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .markdown-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .markdown-body th {
+            background: #4a90d9;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        
+        .markdown-body td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+        
+        .markdown-body tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .markdown-body a {
+            color: #4a90d9;
+            text-decoration: none;
+        }
+        
+        .markdown-body a:hover {
+            text-decoration: underline;
+        }
+        
+        .markdown-body strong {
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .markdown-body hr {
+            border: none;
+            border-top: 2px solid #ddd;
+            margin: 30px 0;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4a90d9;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid #f5c6cb;
+            margin: 20px 0;
+        }
+        
+        /* 阶段标签 */
+        .stage-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .badge-basic { background: #e8f5e9; color: #2e7d32; }
+        .badge-advanced { background: #e3f2fd; color: #1976d2; }
+        .badge-practice { background: #fff3e0; color: #f57c00; }
+        .badge-expert { background: #f3e5f5; color: #7b1fa2; }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 左侧导航 -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h1>📘 Go 语言学习</h1>
+            <p>90 天从入门到精通</p>
+            <div class="progress-info">
+                <span>学习进度：<span id="progressPercent">0%</span></span>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">📅 第 1 阶段 - 基础</div>
+            <ul class="day-list" id="stage1"></ul>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">📅 第 2 阶段 - 进阶</div>
+            <ul class="day-list" id="stage2"></ul>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">📅 第 3 阶段 - 实战</div>
+            <ul class="day-list" id="stage3"></ul>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">📅 第 4 阶段 - 高级</div>
+            <ul class="day-list" id="stage4"></ul>
+        </div>
+    </nav>
+    
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <div class="header-bar">
+            <div class="breadcrumb">
+                <a href="index.html">🏠 首页</a> / 
+                <span id="currentDayText">第 1 天</span>
+            </div>
+            <div>
+                <button class="btn btn-nav" onclick="prevDay()">← 前一天</button>
+                <button class="btn btn-nav" onclick="nextDay()">后一天 →</button>
+                <a href="index.html" class="btn btn-outline btn-nav">返回首页</a>
+            </div>
+        </div>
+        
+        <!-- 内容显示区 -->
+        <div id="content" class="markdown-body">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>正在加载学习内容...</p>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        // 当前学习天数
+        let currentDay = 1;
+        const totalDays = 90;
+        
+        // 阶段划分
+        const stages = {
+            1: { days: 15, name: '基础', badge: 'badge-basic' },
+            2: { days: 15, name: '进阶', badge: 'badge-advanced' },
+            3: { days: 30, name: '实战', badge: 'badge-practice' },
+            4: { days: 30, name: '高级', badge: 'badge-expert' }
+        };
+        
+        // 初始化
+        function init() {
+            // 从 URL 获取天数
+            const urlParams = new URLSearchParams(window.location.search);
+            const dayParam = urlParams.get('day');
+            if (dayParam) {
+                currentDay = parseInt(dayParam);
+                if (currentDay < 1) currentDay = 1;
+                if (currentDay > totalDays) currentDay = totalDays;
+            }
+            
+            // 生成导航
+            generateNavigation();
+            
+            // 加载内容
+            loadDayContent(currentDay);
+            
+            // 更新进度
+            updateProgress();
+        }
+        
+        // 生成导航菜单
+        function generateNavigation() {
+            let dayCount = 1;
+            
+            for (let stage = 1; stage <= 4; stage++) {
+                const stageElement = document.getElementById(`stage${stage}`);
+                const stageInfo = stages[stage];
+                
+                for (let day = 1; day <= stageInfo.days && dayCount <= totalDays; day++) {
+                    const li = document.createElement('li');
+                    const dayNum = dayCount;
+                    const isActive = dayNum === currentDay ? 'active' : '';
+                    const isCompleted = dayNum < currentDay ? 'completed' : '';
+                    
+                    li.innerHTML = `
+                        <a class="day-item ${isActive} ${isCompleted}" onclick="loadDay(${dayNum})">
+                            第${dayNum}天 - ${getDayTitle(dayNum)}
+                        </a>
+                    `;
+                    
+                    stageElement.appendChild(li);
+                    dayCount++;
+                }
+            }
+        }
+        
+        // 获取天的标题
+        function getDayTitle(day) {
+            if (day <= 15) {
+                const titles = [
+                    '环境搭建', '变量类型', '控制结构', '循环', '数组切片',
+                    'Map', '函数基础', '函数进阶', '指针', '结构体',
+                    '方法', '接口', '错误处理', '包管理', '阶段复习'
+                ];
+                return titles[day - 1] || '学习内容';
+            } else if (day <= 30) {
+                return '进阶内容';
+            } else if (day <= 60) {
+                return '实战项目';
+            } else {
+                return '高级专题';
+            }
+        }
+        
+        // 加载指定天的内容
+        function loadDay(day) {
+            currentDay = day;
+            updateURL();
+            loadDayContent(day);
+            updateNavigation();
+            updateProgress();
+            
+            // 滚动到顶部
+            window.scrollTo(0, 0);
+        }
+        
+        // 更新 URL
+        function updateURL() {
+            const newUrl = window.location.pathname + '?day=' + currentDay;
+            window.history.pushState({ day: currentDay }, '', newUrl);
+        }
+        
+        // 更新导航高亮
+        function updateNavigation() {
+            document.querySelectorAll('.day-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.textContent.includes(`第${currentDay}天`)) {
+                    item.classList.add('active');
+                }
+            });
+            
+            document.getElementById('currentDayText').textContent = `第${currentDay}天`;
+        }
+        
+        // 更新进度
+        function updateProgress() {
+            const percent = Math.round((currentDay / totalDays) * 100);
+            document.getElementById('progressPercent').textContent = `${percent}%`;
+            document.getElementById('progressFill').style.width = `${percent}%`;
+        }
+        
+        // 加载天的内容
+        function loadDayContent(day) {
+            const contentDiv = document.getElementById('content');
+            
+            contentDiv.innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>正在加载第${day}天的学习内容...</p>
+                </div>
+            `;
+            
+            // 计算日期
+            const startDate = new Date('2026-03-29');
+            const targetDate = new Date(startDate);
+            targetDate.setDate(startDate.getDate() + day - 1);
+            const dateStr = targetDate.toISOString().split('T')[0];
+            
+            // 尝试加载每日 MD 文件
+            fetch(`daily/${dateStr}.md`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('文件不存在');
+                    }
+                    return response.text();
+                })
+                .then(markdown => {
+                    const html = marked.parse(markdown);
+                    contentDiv.innerHTML = html;
+                    highlightCode();
+                })
+                .catch(error => {
+                    // 如果文件不存在，生成默认内容
+                    contentDiv.innerHTML = generateDefaultContent(day);
+                    highlightCode();
+                });
+        }
+        
+        // 生成默认内容
+        function generateDefaultContent(day) {
+            const startDate = new Date('2026-03-29');
+            const targetDate = new Date(startDate);
+            targetDate.setDate(startDate.getDate() + day - 1);
+            const dateStr = targetDate.toISOString().split('T')[0];
+            
+            let stage = 1;
+            if (day > 60) stage = 4;
+            else if (day > 30) stage = 3;
+            else if (day > 15) stage = 2;
+            
+            return `
+                <h1>📅 第${day}天学习内容</h1>
+                <p><strong>日期</strong>: ${dateStr}</p>
+                <p><strong>阶段</strong>: 第${stage}阶段</p>
+                
+                <h2>🎯 今日学习目标</h2>
+                <ul>
+                    <li>掌握核心知识点</li>
+                    <li>完成代码示例</li>
+                    <li>实战练习项目</li>
+                </ul>
+                
+                <h2>📚 学习内容</h2>
+                <h3>1. 理论知识</h3>
+                <p>详细说明今日学习的主要概念...</p>
+                
+                <h3>2. 代码示例</h3>
+                <pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("第${day}天学习示例")
+}</code></pre>
+                
+                <h3>3. 实战练习</h3>
+                <pre><code class="language-go">// 练习：完成以下功能
+// 1. 功能说明 1
+// 2. 功能说明 2
+
+package main
+
+import "fmt"
+
+func main() {
+    // 在此完成练习
+}</code></pre>
+                
+                <h2>✅ 今日检查清单</h2>
+                <ul>
+                    <li class="pending">□ 完成理论学习</li>
+                    <li class="pending">□ 完成代码示例</li>
+                    <li class="pending">□ 完成实战练习</li>
+                    <li class="pending">□ 记录学习笔记</li>
+                </ul>
+                
+                <div style="margin-top: 30px;">
+                    <button class="btn" onclick="markComplete()">✓ 标记完成</button>
+                    <button class="btn btn-outline" onclick="prevDay()">← 前一天</button>
+                    <button class="btn btn-outline" onclick="nextDay()">后一天 →</button>
+                </div>
+            `;
+        }
+        
+        // 代码高亮
+        function highlightCode() {
+            document.querySelectorAll('pre code').forEach(block => {
+                // 简单处理，防止 XSS
+                block.innerHTML = block.innerHTML.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            });
+        }
+        
+        // 前一天
+        function prevDay() {
+            if (currentDay > 1) {
+                loadDay(currentDay - 1);
+            }
+        }
+        
+        // 后一天
+        function nextDay() {
+            if (currentDay < totalDays) {
+                loadDay(currentDay + 1);
+            }
+        }
+        
+        // 标记完成
+        function markComplete() {
+            alert('✅ 已标记第' + currentDay + '天学习完成！\n继续加油！');
+        }
+        
+        // 页面加载时初始化
+        window.onload = init;
+    </script>
+</body>
+</html>
