@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go 语言学习 - 每日内容</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background: #f5f5f5;
+            border-right: 1px solid #ddd;
+            padding: 20px 0;
+            overflow-y: auto;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 2px solid #4a90d9;
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-header h1 {
+            font-size: 18px;
+            color: #4a90d9;
+            margin-bottom: 5px;
+        }
+        
+        .nav-section {
+            margin-bottom: 20px;
+        }
+        
+        .nav-section-title {
+            padding: 8px 20px;
+            font-weight: bold;
+            color: #4a90d9;
+            font-size: 14px;
+            border-left: 3px solid #4a90d9;
+            margin-bottom: 10px;
+            background: #e8f4fc;
+        }
+        
+        .nav-item {
+            display: block;
+            padding: 6px 20px 6px 25px;
+            color: #333;
+            text-decoration: none;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        
+        .nav-item:hover {
+            background: #e8f4fc;
+            color: #4a90d9;
+        }
+        
+        .nav-item.active {
+            background: #4a90d9;
+            color: white;
+        }
+        
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 40px;
+            max-width: 1200px;
+        }
+        
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            padding: 8px 20px;
+            background: #4a90d9;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            background: #357abd;
+        }
+        
+        .btn-outline {
+            background: white;
+            border: 1px solid #ddd;
+            color: #333;
+        }
+        
+        .btn-outline:hover {
+            background: #f5f5f5;
+        }
+        
+        /* Markdown 样式 */
+        .markdown-body {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 40px;
+            line-height: 1.8;
+        }
+        
+        .markdown-body h1 {
+            font-size: 28px;
+            color: #4a90d9;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #4a90d9;
+        }
+        
+        .markdown-body h2 {
+            font-size: 22px;
+            color: #333;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4a90d9;
+        }
+        
+        .markdown-body h3 {
+            font-size: 18px;
+            color: #4a90d9;
+            margin: 25px 0 12px;
+        }
+        
+        .markdown-body h4 {
+            font-size: 16px;
+            color: #333;
+            margin: 20px 0 10px;
+        }
+        
+        .markdown-body p {
+            margin: 15px 0;
+            text-align: justify;
+        }
+        
+        .markdown-body ul, .markdown-body ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+        
+        .markdown-body li {
+            margin: 8px 0;
+        }
+        
+        .markdown-body code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            color: #e83e8c;
+        }
+        
+        .markdown-body pre {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        .markdown-body pre code {
+            background: none;
+            padding: 0;
+            color: #333;
+        }
+        
+        .markdown-body blockquote {
+            border-left: 4px solid #4a90d9;
+            padding-left: 20px;
+            margin: 20px 0;
+            color: #666;
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .markdown-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .markdown-body th {
+            background: #4a90d9;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        
+        .markdown-body td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+        
+        .markdown-body tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .markdown-body a {
+            color: #4a90d9;
+            text-decoration: none;
+        }
+        
+        .markdown-body a:hover {
+            text-decoration: underline;
+        }
+        
+        .markdown-body strong {
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .markdown-body hr {
+            border: none;
+            border-top: 2px solid #ddd;
+            margin: 30px 0;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4a90d9;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid #f5c6cb;
+            margin: 20px 0;
+        }
+        
+        .date-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .date-selector input {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 左侧导航 -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h1>📅 每日学习</h1>
+            <p>Go 语言 90 天学习路线</p>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">📅 日期选择</div>
+            <div class="date-selector" style="padding: 0 20px;">
+                <input type="date" id="datePicker" onchange="loadDailyContent()">
+            </div>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">📚 快速链接</div>
+            <a href="index.html" class="nav-item">🏠 首页</a>
+            <a href="docs/learning-path.md" class="nav-item" target="_blank">📖 学习路线</a>
+            <a href="https://github.com/suberrrrryurika/go-learning" target="_blank" class="nav-item">💻 GitHub</a>
+        </div>
+    </nav>
+    
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <div class="header-bar">
+            <div>
+                <h2 style="font-size: 24px; color: #333;">📅 每日学习内容</h2>
+                <p style="color: #666; font-size: 14px; margin-top: 5px;">Markdown 渲染版</p>
+            </div>
+            <div>
+                <a href="index.html" class="btn btn-outline">返回首页</a>
+                <a href="https://github.com/suberrrrryurika/go-learning" target="_blank" class="btn">GitHub</a>
+            </div>
+        </div>
+        
+        <!-- 日期选择 -->
+        <div class="date-selector">
+            <label for="datePicker" style="font-weight: bold;">选择日期：</label>
+            <input type="date" id="datePicker" onchange="loadDailyContent()">
+        </div>
+        
+        <!-- 内容显示区 -->
+        <div id="content" class="markdown-body">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>正在加载学习内容...</p>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        // 设置默认日期为今天
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('datePicker').value = today;
+        
+        // 加载每日内容
+        function loadDailyContent() {
+            const date = document.getElementById('datePicker').value;
+            const contentDiv = document.getElementById('content');
+            
+            contentDiv.innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>正在加载 ${date} 的学习内容...</p>
+                </div>
+            `;
+            
+            // 加载 MD 文件
+            fetch(`daily/${date}.md`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`文件不存在：daily/${date}.md`);
+                    }
+                    return response.text();
+                })
+                .then(markdown => {
+                    // 使用 marked.js 渲染 Markdown
+                    const html = marked.parse(markdown);
+                    contentDiv.innerHTML = html;
+                    
+                    // 添加代码高亮（简单实现）
+                    document.querySelectorAll('pre code').forEach(block => {
+                        block.innerHTML = block.innerHTML.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    });
+                })
+                .catch(error => {
+                    contentDiv.innerHTML = `
+                        <div class="error">
+                            <h3>⚠️ 加载失败</h3>
+                            <p>${error.message}</p>
+                            <p style="margin-top: 10px;">
+                                <a href="index.html" class="btn">返回首页</a>
+                            </p>
+                        </div>
+                    `;
+                });
+        }
+        
+        // 页面加载时加载今日内容
+        window.onload = loadDailyContent;
+    </script>
+</body>
+</html>
