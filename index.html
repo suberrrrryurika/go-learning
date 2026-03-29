@@ -13,282 +13,558 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
             min-height: 100vh;
-            padding: 20px;
         }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+        /* 左侧导航 */
+        .sidebar {
+            width: 280px;
+            background: #f5f5f5;
+            border-right: 1px solid #ddd;
+            padding: 20px 0;
+            overflow-y: auto;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
         }
         
-        header {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 2px solid #4a90d9;
+            margin-bottom: 20px;
         }
         
-        h1 {
-            color: #667eea;
-            font-size: 36px;
-            margin-bottom: 10px;
-        }
-        
-        .subtitle {
-            color: #666;
+        .sidebar-header h1 {
             font-size: 18px;
+            color: #4a90d9;
+            margin-bottom: 5px;
         }
         
-        .stats {
+        .sidebar-header p {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .nav-section {
+            margin-bottom: 20px;
+        }
+        
+        .nav-section-title {
+            padding: 8px 20px;
+            font-weight: bold;
+            color: #4a90d9;
+            font-size: 14px;
+            border-left: 3px solid #4a90d9;
+            margin-bottom: 10px;
+            background: #e8f4fc;
+        }
+        
+        .nav-item {
+            display: block;
+            padding: 6px 20px 6px 25px;
+            color: #333;
+            text-decoration: none;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        
+        .nav-item:hover {
+            background: #e8f4fc;
+            color: #4a90d9;
+        }
+        
+        .nav-item.active {
+            background: #4a90d9;
+            color: white;
+        }
+        
+        /* 主内容区 */
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 30px 40px;
+            max-width: 1200px;
+        }
+        
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 30px;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-box input {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 300px;
+            font-size: 14px;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: #4a90d9;
+        }
+        
+        .btn {
+            padding: 8px 20px;
+            background: #4a90d9;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            background: #357abd;
+        }
+        
+        .btn-outline {
+            background: white;
+            border: 1px solid #ddd;
+            color: #333;
+        }
+        
+        .btn-outline:hover {
+            background: #f5f5f5;
+        }
+        
+        /* 进度卡片 */
+        .progress-card {
+            background: linear-gradient(135deg, #4a90d9 0%, #357abd 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(74,144,217,0.3);
+        }
+        
+        .progress-stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             margin-top: 20px;
         }
         
-        .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
+        .stat-item {
             text-align: center;
         }
         
         .stat-number {
-            font-size: 48px;
+            font-size: 36px;
             font-weight: bold;
+            display: block;
         }
         
         .stat-label {
-            font-size: 14px;
+            font-size: 13px;
             opacity: 0.9;
         }
         
-        .content-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-        
-        @media (max-width: 768px) {
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .card {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        
-        .card h2 {
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-        
-        .today-content {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-        }
-        
-        .today-content h2 {
-            color: white;
-        }
-        
-        .day-list {
-            list-style: none;
-        }
-        
-        .day-item {
-            padding: 15px;
-            border-bottom: 1px solid #eee;
-            transition: all 0.3s;
-        }
-        
-        .day-item:hover {
-            background: #f8f9fa;
-            transform: translateX(10px);
-        }
-        
-        .day-item a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        
-        .stage-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            margin-left: 10px;
-        }
-        
-        .stage-basic {
-            background: #4CAF50;
-            color: white;
-        }
-        
-        .stage-advanced {
-            background: #2196F3;
-            color: white;
-        }
-        
-        .stage-practice {
-            background: #FF9800;
-            color: white;
-        }
-        
-        .stage-expert {
-            background: #9C27B0;
-            color: white;
-        }
-        
         .progress-bar {
-            background: #eee;
+            background: rgba(255,255,255,0.3);
             border-radius: 10px;
             height: 20px;
-            margin: 20px 0;
+            margin-top: 20px;
             overflow: hidden;
         }
         
         .progress-fill {
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            background: white;
             height: 100%;
             transition: width 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: #4a90d9;
+            font-weight: bold;
             font-size: 12px;
+        }
+        
+        /* 今日学习 */
+        .today-section {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4a90d9;
+        }
+        
+        .today-content {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 20px;
+        }
+        
+        .today-content h3 {
+            color: #4a90d9;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .today-content ul {
+            list-style: none;
+            margin: 15px 0;
+        }
+        
+        .today-content li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .today-content li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4caf50;
             font-weight: bold;
         }
         
-        .quick-links {
+        .today-content li.pending:before {
+            content: "○";
+            color: #999;
+        }
+        
+        /* 学习路线 */
+        .roadmap {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
             margin-top: 20px;
         }
         
-        .quick-link {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+        .stage-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
             padding: 20px;
-            border-radius: 15px;
-            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .stage-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .stage-card h4 {
+            color: #4a90d9;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .stage-card ul {
+            list-style: none;
+        }
+        
+        .stage-card li {
+            padding: 6px 0;
+            font-size: 13px;
+            color: #666;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .stage-card li:last-child {
+            border-bottom: none;
+        }
+        
+        .stage-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .badge-basic { background: #e8f5e9; color: #2e7d32; }
+        .badge-advanced { background: #e3f2fd; color: #1976d2; }
+        .badge-practice { background: #fff3e0; color: #f57c00; }
+        .badge-expert { background: #f3e5f5; color: #7b1fa2; }
+        
+        /* 快速链接 */
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .quick-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 6px;
             text-decoration: none;
-            transition: transform 0.3s;
+            color: #333;
+            transition: all 0.3s;
         }
         
         .quick-link:hover {
-            transform: scale(1.05);
+            background: #e8f4fc;
+            border-color: #4a90d9;
         }
         
         .quick-link-icon {
-            font-size: 36px;
-            margin-bottom: 10px;
+            font-size: 28px;
         }
         
-        footer {
+        /* 页脚 */
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
             text-align: center;
-            color: white;
-            margin-top: 30px;
-            padding: 20px;
+            color: #666;
+            font-size: 13px;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            .progress-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🚀 Go 语言学习平台</h1>
-            <p class="subtitle">90 天从入门到精通 - 系统化学习路线</p>
-            
-            <div class="stats">
-                <div class="stat-card">
-                    <div class="stat-number" id="currentDay">0</div>
-                    <div class="stat-label">当前学习天数</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="totalDays">90</div>
-                    <div class="stat-label">总学习天数</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="progress">0%</div>
-                    <div class="stat-label">学习进度</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="stage">基础</div>
-                    <div class="stat-label">当前阶段</div>
-                </div>
-            </div>
-            
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill">0%</div>
-            </div>
-        </header>
+    <!-- 左侧导航 -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h1>📘 Go 语言学习</h1>
+            <p>90 天从入门到精通</p>
+        </div>
         
-        <div class="content-grid">
-            <div class="card today-content">
-                <h2>📅 今日学习内容</h2>
-                <div id="todayContent">
-                    <p>加载中...</p>
-                </div>
+        <div class="nav-section">
+            <div class="nav-section-title">📅 今日学习</div>
+            <a href="#today" class="nav-item active">第 1 天 - 环境搭建</a>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">📚 学习阶段</div>
+            <a href="#stage1" class="nav-item">第 1 阶段 - 基础</a>
+            <a href="#stage2" class="nav-item">第 2 阶段 - 进阶</a>
+            <a href="#stage3" class="nav-item">第 3 阶段 - 实战</a>
+            <a href="#stage4" class="nav-item">第 4 阶段 - 高级</a>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">🔗 快速链接</div>
+            <a href="https://go.dev" target="_blank" class="nav-item">Go 官网</a>
+            <a href="https://pkg.go.dev" target="_blank" class="nav-item">Go 文档</a>
+            <a href="https://github.com/suberrrrryurika/go-learning" target="_blank" class="nav-item">GitHub 仓库</a>
+        </div>
+    </nav>
+    
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <div class="header-bar">
+            <div>
+                <h2 style="font-size: 24px; color: #333;">Go 语言学习平台</h2>
+                <p style="color: #666; font-size: 14px; margin-top: 5px;">系统化学习路线 · 每日自动更新</p>
             </div>
-            
-            <div class="card">
-                <h2>📚 学习路线</h2>
-                <ul class="day-list">
-                    <li class="day-item">
-                        <a href="#stage1">第 1-15 天：Go 语言基础</a>
-                        <span class="stage-badge stage-basic">基础</span>
-                    </li>
-                    <li class="day-item">
-                        <a href="#stage2">第 16-30 天：Go 语言进阶</a>
-                        <span class="stage-badge stage-advanced">进阶</span>
-                    </li>
-                    <li class="day-item">
-                        <a href="#stage3">第 31-60 天：后台开发实战</a>
-                        <span class="stage-badge stage-practice">实战</span>
-                    </li>
-                    <li class="day-item">
-                        <a href="#stage4">第 61-90 天：高级专题</a>
-                        <span class="stage-badge stage-expert">高级</span>
-                    </li>
-                </ul>
-                
-                <div class="quick-links">
-                    <a href="/docs/learning-path.md" class="quick-link">
-                        <div class="quick-link-icon">📖</div>
-                        <div>完整路线</div>
-                    </a>
-                    <a href="/daily/" class="quick-link">
-                        <div class="quick-link-icon">📅</div>
-                        <div>每日学习</div>
-                    </a>
-                    <a href="https://go.dev" target="_blank" class="quick-link">
-                        <div class="quick-link-icon">🌐</div>
-                        <div>Go 官网</div>
-                    </a>
-                    <a href="https://pkg.go.dev" target="_blank" class="quick-link">
-                        <div class="quick-link-icon">📦</div>
-                        <div>文档</div>
-                    </a>
-                </div>
+            <div class="search-box">
+                <input type="text" placeholder="搜索学习内容..." id="searchInput">
+                <button class="btn" onclick="searchContent()">搜索</button>
             </div>
         </div>
         
-        <footer>
+        <!-- 进度卡片 -->
+        <div class="progress-card">
+            <h3 style="font-size: 20px; margin-bottom: 15px;">📊 学习进度</h3>
+            <div class="progress-stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="currentDay">1</span>
+                    <span class="stat-label">当前天数</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">90</span>
+                    <span class="stat-label">总天数</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="progress">1%</span>
+                    <span class="stat-label">完成度</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="stage">基础</span>
+                    <span class="stat-label">当前阶段</span>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill">1%</div>
+            </div>
+        </div>
+        
+        <!-- 今日学习 -->
+        <section id="today" class="today-section">
+            <h3 class="section-title">📅 今日学习内容</h3>
+            <div class="today-content" id="todayContent">
+                <h3>第 1 天：Go 语言简介与环境搭建</h3>
+                
+                <h4 style="margin: 20px 0 10px; color: #333;">学习内容</h4>
+                <ul>
+                    <li>了解 Go 语言的历史和特点</li>
+                    <li>安装 Go 开发环境（Linux/Mac/Windows）</li>
+                    <li>配置 GOPATH 和 GOMOD</li>
+                    <li>编写第一个 Hello World 程序</li>
+                    <li>学习使用 go run 和 go build 命令</li>
+                </ul>
+                
+                <h4 style="margin: 20px 0 10px; color: #333;">实践任务</h4>
+                <ul>
+                    <li class="pending">安装 Go 1.21+ 版本</li>
+                    <li class="pending">配置环境变量</li>
+                    <li class="pending">创建 hello.go 文件</li>
+                    <li class="pending">运行并编译程序</li>
+                    <li class="pending">理解 go.mod 文件</li>
+                </ul>
+                
+                <h4 style="margin: 20px 0 10px; color: #333;">代码示例</h4>
+                <pre style="background: #f5f5f5; padding: 15px; border-radius: 6px; overflow-x: auto; border: 1px solid #e0e0e0;"><code style="color: #333;">package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello, Go!")
+}</code></pre>
+                
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                    <button class="btn" onclick="markComplete()">✓ 标记完成</button>
+                    <a href="docs/learning-path.md" class="btn btn-outline">查看详细路线</a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 学习路线 -->
+        <section>
+            <h3 class="section-title">📚 学习路线</h3>
+            <div class="roadmap">
+                <div class="stage-card" id="stage1">
+                    <h4>第 1 阶段 - Go 语言基础 <span class="stage-badge badge-basic">基础</span></h4>
+                    <ul>
+                        <li>第 1-2 天：环境搭建与变量</li>
+                        <li>第 3-4 天：控制结构与循环</li>
+                        <li>第 5-6 天：数组、切片、Map</li>
+                        <li>第 7-9 天：函数与指针</li>
+                        <li>第 10-12 天：结构体与方法</li>
+                        <li>第 13-15 天：接口与错误处理</li>
+                    </ul>
+                </div>
+                
+                <div class="stage-card" id="stage2">
+                    <h4>第 2 阶段 - Go 语言进阶 <span class="stage-badge badge-advanced">进阶</span></h4>
+                    <ul>
+                        <li>第 16-18 天：并发编程基础</li>
+                        <li>第 19-20 天：Channel 与同步</li>
+                        <li>第 21-23 天：标准库详解</li>
+                        <li>第 24-25 天：测试与调试</li>
+                        <li>第 26-28 天：Web 开发基础</li>
+                        <li>第 29-30 天：阶段项目</li>
+                    </ul>
+                </div>
+                
+                <div class="stage-card" id="stage3">
+                    <h4>第 3 阶段 - 后台开发实战 <span class="stage-badge badge-practice">实战</span></h4>
+                    <ul>
+                        <li>第 31-33 天：Gin 框架</li>
+                        <li>第 34-35 天：GORM 数据库</li>
+                        <li>第 36-38 天：用户认证系统</li>
+                        <li>第 39-40 天：消息队列</li>
+                        <li>第 41-45 天：微服务架构</li>
+                        <li>第 46-50 天：Docker 与 K8s</li>
+                    </ul>
+                </div>
+                
+                <div class="stage-card" id="stage4">
+                    <h4>第 4 阶段 - 高级专题 <span class="stage-badge badge-expert">高级</span></h4>
+                    <ul>
+                        <li>第 51-60 天：综合项目</li>
+                        <li>第 61-70 天：源码阅读</li>
+                        <li>第 71-80 天：性能调优</li>
+                        <li>第 81-90 天：架构设计</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 快速链接 -->
+        <section>
+            <h3 class="section-title">🔗 快速链接</h3>
+            <div class="quick-links">
+                <a href="https://go.dev" target="_blank" class="quick-link">
+                    <span class="quick-link-icon">🌐</span>
+                    <div>
+                        <strong>Go 官网</strong>
+                        <div style="font-size: 12px; color: #666;">go.dev</div>
+                    </div>
+                </a>
+                <a href="https://pkg.go.dev" target="_blank" class="quick-link">
+                    <span class="quick-link-icon">📦</span>
+                    <div>
+                        <strong>Go 文档</strong>
+                        <div style="font-size: 12px; color: #666;">pkg.go.dev</div>
+                    </div>
+                </a>
+                <a href="https://github.com/suberrrrryurika/go-learning" target="_blank" class="quick-link">
+                    <span class="quick-link-icon">💻</span>
+                    <div>
+                        <strong>GitHub 仓库</strong>
+                        <div style="font-size: 12px; color: #666;">源代码与更新</div>
+                    </div>
+                </a>
+                <a href="daily/" target="_blank" class="quick-link">
+                    <span class="quick-link-icon">📅</span>
+                    <div>
+                        <strong>每日学习</strong>
+                        <div style="font-size: 12px; color: #666;">历史学习内容</div>
+                    </div>
+                </a>
+            </div>
+        </section>
+        
+        <!-- 页脚 -->
+        <footer class="footer">
             <p>Go 语言学习平台 | 每天进步一点点 | 2026</p>
-            <p>更新时间：<span id="updateTime"></span></p>
+            <p style="margin-top: 10px;">
+                <a href="https://github.com/suberrrrryurika/go-learning" style="color: #4a90d9; text-decoration: none;">GitHub</a> · 
+                <a href="https://go-learning.yurikapromax.workers.dev" style="color: #4a90d9; text-decoration: none;">Cloudflare Pages</a> · 
+                最后更新：<span id="updateTime"></span>
+            </p>
         </footer>
-    </div>
+    </main>
     
     <script>
         // 计算学习天数
@@ -300,12 +576,10 @@
         
         // 更新统计
         document.getElementById('currentDay').textContent = currentDay;
-        document.getElementById('progress').textContent = Math.min(100, Math.round((currentDay / 90) * 100)) + '%';
-        
-        // 更新进度条
-        const progress = Math.min(100, (currentDay / 90) * 100);
+        const progress = Math.min(100, Math.round((currentDay / 90) * 100));
+        document.getElementById('progress').textContent = progress + '%';
         document.getElementById('progressFill').style.width = progress + '%';
-        document.getElementById('progressFill').textContent = Math.round(progress) + '%';
+        document.getElementById('progressFill').textContent = progress + '%';
         
         // 确定阶段
         let stage = '基础';
@@ -317,22 +591,29 @@
         // 更新时间
         document.getElementById('updateTime').textContent = new Date().toLocaleString('zh-CN');
         
-        // 加载今日学习内容
-        fetch('/today.md')
-            .then(response => response.text())
-            .then(content => {
-                // 简单 Markdown 转换
-                const html = content
-                    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-                    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-                    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-                    .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
-                    .replace(/\n/gim, '<br>');
-                document.getElementById('todayContent').innerHTML = html;
-            })
-            .catch(err => {
-                document.getElementById('todayContent').innerHTML = '<p>今日学习内容即将发布...</p>';
+        // 搜索功能
+        function searchContent() {
+            const query = document.getElementById('searchInput').value;
+            if (query) {
+                alert('搜索功能开发中...\n当前搜索：' + query);
+            }
+        }
+        
+        // 标记完成
+        function markComplete() {
+            alert('✅ 已标记今日学习完成！\n继续加油！');
+        }
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
             });
+        });
     </script>
 </body>
 </html>
