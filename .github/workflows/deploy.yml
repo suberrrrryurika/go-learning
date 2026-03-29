@@ -1,0 +1,39 @@
+name: Deploy Go Learning Site
+
+on:
+  push:
+    branches: [main, master]
+  schedule:
+    - cron: '0 0 * * *'  # 每天 UTC 0 点（北京时间 8 点）
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Generate daily content
+        run: |
+          chmod +x generate-daily.sh
+          bash generate-daily.sh
+      
+      - name: Commit and push if changed
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add daily/ today.md
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update daily content $(date +%Y-%m-%d)"
+          git push
+      
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy . --project-name=go-learning --branch=main
